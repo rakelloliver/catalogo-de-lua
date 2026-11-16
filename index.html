@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>De Lua Pratas | Catálogo</title>
+  <style>
+    :root {
+      --azul: #8cabef;
+      --azul-claro: #c4d4f8;
+      --azul-escuro: #19213d;
+      --preto: #0b0c10;
+      --branco: #ffffff;
+      --texto: #1e2230;
+      --coral: #f5bda9;
+      --sombra: 0 12px 34px rgba(25, 33, 61, .14);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--texto);
+      background: var(--branco);
+      font-family: Arial, Helvetica, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+
+    .site-shell {
+      width: min(100%, 1600px);
+      margin: 0 auto;
+      overflow: hidden;
+      background: var(--branco);
+    }
+
+    .topbar {
+      position: relative;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 22px;
+      min-height: 72px;
+      padding: 10px 28px;
+      border-bottom: 1px solid #edf0f6;
+      background: rgba(255,255,255,.97);
+      z-index: 20;
+    }
+    .brand {
+      font-weight: 800;
+      letter-spacing: .16em;
+      color: var(--azul-escuro);
+      white-space: nowrap;
+    }
+    .top-categories {
+      display: flex;
+      gap: 26px;
+      align-items: center;
+      overflow-x: auto;
+      scrollbar-width: none;
+      scroll-snap-type: x proximity;
+      padding: 12px 4px;
+      cursor: grab;
+    }
+    .top-categories::-webkit-scrollbar { display: none; }
+    .top-categories a {
+      flex: 0 0 auto;
+      scroll-snap-align: start;
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: .18em;
+      transition: color .2s ease;
+      white-space: nowrap;
+    }
+    .top-categories a:hover { color: var(--azul); }
+    .top-actions { display: flex; gap: 10px; }
+    .icon-button {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      border: 1px solid #dfe4ef;
+      background: var(--branco);
+      color: var(--azul-escuro);
+      cursor: pointer;
+    }
+
+    .carousel { position: relative; }
+    .hero-track {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      cursor: grab;
+      user-select: none;
+    }
+    .hero-track::-webkit-scrollbar { display: none; }
+    .hero-slide {
+      position: relative;
+      flex: 0 0 100%;
+      min-height: 480px;
+      scroll-snap-align: start;
+      display: grid;
+      grid-template-columns: 1.05fr .9fr 1.05fr;
+      align-items: center;
+      gap: 28px;
+      padding: 56px 8%;
+      color: var(--branco);
+      background: linear-gradient(120deg, #07080c, #171a25);
+      overflow: hidden;
+    }
+    .hero-slide::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(140,171,239,.18), transparent 44%);
+      pointer-events: none;
+    }
+    .hero-copy, .hero-offer, .hero-media { position: relative; z-index: 1; }
+    .hero-kicker {
+      margin: 0 0 12px;
+      color: var(--azul);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+    }
+    .hero-title {
+      margin: 0;
+      font-size: clamp(50px, 7vw, 105px);
+      font-weight: 300;
+      line-height: .9;
+      letter-spacing: -.05em;
+    }
+    .hero-text {
+      max-width: 420px;
+      margin: 24px 0 0;
+      color: #d9dce7;
+      font-size: 16px;
+      line-height: 1.55;
+    }
+    .hero-media {
+      min-height: 350px;
+      display: grid;
+      place-items: center;
+    }
+    .hero-media img {
+      width: 100%;
+      height: 360px;
+      object-fit: contain;
+      display: block;
+      filter: drop-shadow(0 24px 30px rgba(0,0,0,.5));
+      pointer-events: none;
+    }
+    .image-placeholder {
+      width: min(100%, 410px);
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      border: 1px dashed rgba(255,255,255,.5);
+      border-radius: 20px;
+      color: #d7dbea;
+      text-align: center;
+      letter-spacing: .12em;
+      font-size: 13px;
+      padding: 20px;
+    }
+    .hero-offer { text-align: center; }
+    .offer-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 300px;
+      min-height: 120px;
+      padding: 18px 34px;
+      border: 3px solid var(--coral);
+      border-radius: 999px;
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .offer-badge strong { font-size: 72px; margin: 0 8px; }
+    .hero-button {
+      display: inline-block;
+      margin-top: 24px;
+      padding: 14px 24px;
+      border-radius: 999px;
+      background: var(--azul);
+      color: var(--azul-escuro);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      font-size: 12px;
+    }
+
+    .arrow {
+      position: absolute;
+      top: 50%;
+      z-index: 10;
+      width: 46px;
+      height: 46px;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(255,255,255,.95);
+      color: var(--azul-escuro);
+      box-shadow: var(--sombra);
+      cursor: pointer;
+      transform: translateY(-50%);
+      font-size: 25px;
+    }
+    .arrow.prev { left: 18px; }
+    .arrow.next { right: 18px; }
+
+    .ticker {
+      overflow: hidden;
+      background: var(--coral);
+      color: #2d1a18;
+      white-space: nowrap;
+      padding: 12px 0;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .17em;
+    }
+    .ticker span {
+      display: inline-block;
+      min-width: 200%;
+      animation: ticker 24s linear infinite;
+    }
+    @keyframes ticker { to { transform: translateX(-50%); } }
+
+    .category-section { padding: 52px 0 68px; }
+    .section-eyebrow {
+      margin: 0;
+      text-align: center;
+      color: #6b7080;
+      font-size: 13px;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+    }
+    .section-line {
+      width: 72px;
+      height: 2px;
+      margin: 14px auto 28px;
+      background: var(--coral);
+    }
+    .category-carousel { position: relative; padding: 0 55px; }
+    .category-track {
+      display: flex;
+      gap: 22px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      cursor: grab;
+      user-select: none;
+      padding: 10px 0 22px;
+    }
+    .category-track::-webkit-scrollbar { display: none; }
+    .category-card {
+      flex: 0 0 clamp(210px, 18vw, 280px);
+      scroll-snap-align: start;
+      text-align: center;
+      transition: transform .22s ease;
+    }
+    .category-card:hover { transform: translateY(-5px); }
+    .category-image {
+      position: relative;
+      aspect-ratio: 1;
+      overflow: hidden;
+      background: var(--azul-claro);
+      box-shadow: var(--sombra);
+    }
+    .category-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+    }
+    .category-placeholder {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+      color: var(--azul-escuro);
+      background:
+        radial-gradient(circle at 35% 25%, rgba(255,255,255,.65), transparent 28%),
+        linear-gradient(135deg, var(--azul-claro), var(--azul));
+      font-weight: 800;
+      letter-spacing: .1em;
+      font-size: 12px;
+    }
+    .category-name {
+      display: block;
+      margin-top: 16px;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .footer {
+      padding: 34px 28px;
+      background: var(--azul-escuro);
+      color: var(--branco);
+      text-align: center;
+    }
+    .footer strong { letter-spacing: .14em; }
+    .footer p { margin: 8px 0 0; color: #dbe3f7; font-size: 13px; }
+
+    @media (max-width: 980px) {
+      .topbar { grid-template-columns: 1fr auto; padding: 10px 16px; }
+      .top-categories { grid-column: 1 / -1; grid-row: 2; }
+      .hero-slide {
+        grid-template-columns: 1fr 1fr;
+        min-height: 650px;
+        padding: 56px 8%;
+      }
+      .hero-media { grid-column: 2; grid-row: 1 / span 2; }
+      .hero-offer { text-align: left; }
+      .offer-badge { min-width: 250px; min-height: 94px; font-size: 20px; }
+      .offer-badge strong { font-size: 54px; }
+    }
+
+    @media (max-width: 680px) {
+      .top-actions { display: none; }
+      .hero-slide {
+        min-height: auto;
+        grid-template-columns: 1fr;
+        gap: 18px;
+        padding: 48px 48px 54px;
+        text-align: center;
+      }
+      .hero-title { font-size: 60px; }
+      .hero-text { margin-inline: auto; }
+      .hero-media { grid-column: 1; grid-row: auto; min-height: 230px; }
+      .hero-media img { height: 250px; }
+      .hero-offer { text-align: center; }
+      .offer-badge { min-width: 230px; }
+      .arrow { width: 38px; height: 38px; font-size: 20px; }
+      .arrow.prev { left: 7px; }
+      .arrow.next { right: 7px; }
+      .category-carousel { padding: 0 22px; }
+      .category-card { flex-basis: 72vw; }
+      .category-carousel .arrow { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="site-shell">
+    <header class="topbar">
+      <a class="brand" href="#inicio" target="_top">DE LUA PRATAS</a>
+      <nav id="topCategories" class="top-categories" aria-label="Categorias"></nav>
+      <div class="top-actions" aria-hidden="true">
+        <span class="icon-button">⌕</span>
+        <span class="icon-button">♡</span>
+      </div>
+    </header>
+
+    <section id="inicio" class="carousel" aria-label="Destaques">
+      <div id="heroTrack" class="hero-track"></div>
+      <button class="arrow prev" type="button" data-target="heroTrack" data-direction="-1" aria-label="Destaque anterior">‹</button>
+      <button class="arrow next" type="button" data-target="heroTrack" data-direction="1" aria-label="Próximo destaque">›</button>
+    </section>
+
+    <div class="ticker" aria-hidden="true">
+      <span>DE LUA PRATAS + NOVIDADES + OFERTAS ESPECIAIS + DE LUA PRATAS + NOVIDADES + OFERTAS ESPECIAIS + DE LUA PRATAS + NOVIDADES + OFERTAS ESPECIAIS + </span>
+    </div>
+
+    <section class="category-section" aria-labelledby="categoryTitle">
+      <p id="categoryTitle" class="section-eyebrow">Navegue por categoria</p>
+      <div class="section-line"></div>
+      <div class="category-carousel">
+        <div id="categoryTrack" class="category-track"></div>
+        <button class="arrow prev" type="button" data-target="categoryTrack" data-direction="-1" aria-label="Categorias anteriores">‹</button>
+        <button class="arrow next" type="button" data-target="categoryTrack" data-direction="1" aria-label="Próximas categorias">›</button>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <strong>DE LUA PRATAS</strong>
+      <p>Edite as imagens, textos e links no bloco CONFIG do arquivo.</p>
+    </footer>
+  </main>
+
+  <script>
+    /* ============================================================
+       EDITE SOMENTE ESTE BLOCO CONFIG
+
+       imagem: coloque a URL pública da sua imagem.
+       link: coloque o endereço da página da categoria no Google Sites.
+       Para abrir na mesma página, use links publicados do Google Sites.
+       ============================================================ */
+    const CONFIG = {
+      categorias: [
+        { nome: "Anéis", imagem: "", link: "#" },
+        { nome: "Brincos", imagem: "", link: "#" },
+        { nome: "Berloques", imagem: "", link: "#" },
+        { nome: "Conjuntos", imagem: "", link: "#" },
+        { nome: "Pulseiras", imagem: "", link: "#" },
+        { nome: "Colares", imagem: "", link: "#" },
+        { nome: "Masculinos", imagem: "", link: "#" },
+        { nome: "Infantil", imagem: "", link: "#" },
+        { nome: "Personalizados", imagem: "", link: "#" }
+      ],
+
+      capas: [
+        {
+          titulo: "Novidades\nDe Lua",
+          chamada: "Nova coleção",
+          texto: "Use este espaço para apresentar sua coleção, campanha ou promoção.",
+          imagem: "",
+          ofertaAntes: "ATÉ",
+          oferta: "40%",
+          ofertaDepois: "OFF",
+          botao: "Ver coleção",
+          link: "#"
+        },
+        {
+          titulo: "Black\nFriday",
+          chamada: "Ofertas especiais",
+          texto: "Troque os textos, valores, links e imagens diretamente no bloco CONFIG.",
+          imagem: "",
+          ofertaAntes: "ATÉ",
+          oferta: "60%",
+          ofertaDepois: "OFF",
+          botao: "Ver ofertas",
+          link: "#"
+        },
+        {
+          titulo: "Prata 925\npara presentear",
+          chamada: "Escolhas que encantam",
+          texto: "Destaque suas peças preferidas e leve a cliente para a categoria certa.",
+          imagem: "",
+          ofertaAntes: "A PARTIR DE",
+          oferta: "R$ 00",
+          ofertaDepois: "",
+          botao: "Comprar agora",
+          link: "#"
+        }
+      ]
+    };
+
+    const topCategories = document.getElementById("topCategories");
+    const categoryTrack = document.getElementById("categoryTrack");
+    const heroTrack = document.getElementById("heroTrack");
+
+    function safeLink(link) {
+      return link && link.trim() ? link.trim() : "#";
+    }
+
+    function createImage(url, alt, placeholderText, className = "") {
+      if (!url || !url.trim()) {
+        const placeholder = document.createElement("div");
+        placeholder.className = className || "category-placeholder";
+        placeholder.textContent = placeholderText;
+        return placeholder;
+      }
+      const img = document.createElement("img");
+      img.src = url;
+      img.alt = alt;
+      img.loading = "lazy";
+      return img;
+    }
+
+    CONFIG.categorias.forEach((categoria) => {
+      const topLink = document.createElement("a");
+      topLink.href = safeLink(categoria.link);
+      topLink.target = "_top";
+      topLink.textContent = categoria.nome;
+      topCategories.appendChild(topLink);
+
+      const card = document.createElement("a");
+      card.className = "category-card";
+      card.href = safeLink(categoria.link);
+      card.target = "_top";
+      card.setAttribute("aria-label", `Abrir categoria ${categoria.nome}`);
+
+      const imageBox = document.createElement("div");
+      imageBox.className = "category-image";
+      imageBox.appendChild(createImage(categoria.imagem, categoria.nome, `INSIRA A FOTO\n${categoria.nome.toUpperCase()}`));
+
+      const name = document.createElement("span");
+      name.className = "category-name";
+      name.textContent = categoria.nome;
+
+      card.append(imageBox, name);
+      categoryTrack.appendChild(card);
+    });
+
+    CONFIG.capas.forEach((capa) => {
+      const slide = document.createElement("article");
+      slide.className = "hero-slide";
+
+      const copy = document.createElement("div");
+      copy.className = "hero-copy";
+      copy.innerHTML = `
+        <p class="hero-kicker">${capa.chamada}</p>
+        <h1 class="hero-title">${capa.titulo.replaceAll("\n", "<br>")}</h1>
+        <p class="hero-text">${capa.texto}</p>`;
+
+      const media = document.createElement("div");
+      media.className = "hero-media";
+      media.appendChild(createImage(capa.imagem, capa.titulo.replaceAll("\n", " "), "INSIRA A IMAGEM DA CAPA", "image-placeholder"));
+
+      const offer = document.createElement("div");
+      offer.className = "hero-offer";
+      offer.innerHTML = `
+        <div class="offer-badge"><span>${capa.ofertaAntes}</span><strong>${capa.oferta}</strong><span>${capa.ofertaDepois}</span></div><br>
+        <a class="hero-button" href="${safeLink(capa.link)}" target="_top">${capa.botao}</a>`;
+
+      slide.append(copy, media, offer);
+      heroTrack.appendChild(slide);
+    });
+
+    document.querySelectorAll(".arrow").forEach((button) => {
+      button.addEventListener("click", () => {
+        const track = document.getElementById(button.dataset.target);
+        const direction = Number(button.dataset.direction);
+        track.scrollBy({ left: track.clientWidth * .82 * direction, behavior: "smooth" });
+      });
+    });
+
+    function enableDragScroll(element) {
+      let isDown = false;
+      let startX = 0;
+      let startScroll = 0;
+
+      element.addEventListener("pointerdown", (event) => {
+        isDown = true;
+        startX = event.clientX;
+        startScroll = element.scrollLeft;
+        element.setPointerCapture(event.pointerId);
+        element.style.cursor = "grabbing";
+      });
+      element.addEventListener("pointermove", (event) => {
+        if (!isDown) return;
+        element.scrollLeft = startScroll - (event.clientX - startX);
+      });
+      const stop = () => {
+        isDown = false;
+        element.style.cursor = "grab";
+      };
+      element.addEventListener("pointerup", stop);
+      element.addEventListener("pointercancel", stop);
+      element.addEventListener("pointerleave", stop);
+    }
+
+    [heroTrack, categoryTrack, topCategories].forEach(enableDragScroll);
+  </script>
+</body>
+</html>
